@@ -145,6 +145,10 @@ sub real_initdb {
     my @passwords = `echo $key | pwsafe --export 2> /dev/null`;
     chomp @passwords;
 
+    if ( $passwords[0] =~ /^Enter passphrase for/ ) {
+        shift @passwords;
+    }
+
     die 'Bad password' if $passwords[1] =~ /incorrect/;
     die 'Confusing data from pwsafe' unless $passwords[0] =~ /# passwordsafe/;
 
